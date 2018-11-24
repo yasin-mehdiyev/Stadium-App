@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StadiumModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Areas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Bookings">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AreasId" Type="int" Nullable="false" />
+    <Property Name="ContactsId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="7" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Contacts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Bookings_Areas">
+    <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+    <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Areas">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bookings">
+        <PropertyRef Name="AreasId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bookings_Contacts">
+    <End Role="Contacts" Type="Self.Contacts" Multiplicity="1" />
+    <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contacts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bookings">
+        <PropertyRef Name="ContactsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StadiumModelStoreContainer">
+    <EntitySet Name="Areas" EntityType="Self.Areas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contacts" EntityType="Self.Contacts" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Bookings_Areas" Association="Self.FK_Bookings_Areas">
+      <End Role="Areas" EntitySet="Areas" />
+      <End Role="Bookings" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bookings_Contacts" Association="Self.FK_Bookings_Contacts">
+      <End Role="Contacts" EntitySet="Contacts" />
+      <End Role="Bookings" EntitySet="Bookings" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
